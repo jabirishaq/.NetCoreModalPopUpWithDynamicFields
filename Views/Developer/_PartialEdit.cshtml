@@ -1,0 +1,60 @@
+﻿@*@model EvaluationBizsol.Models.DeveloperDM*@
+
+@model IEnumerable<EvaluationBizsol.Models.DeveloperDM>
+
+
+<div class="row">
+    <div class="col-md-4">
+        @foreach (var item in Model)
+        {
+
+            <label>Name</label>
+            <div class="form-group" disabled>
+                @*<input asp-for="Name" class="form-control" />*@
+                <label>@item.Name</label>
+            </div>
+
+            <label>Age</label>
+            <div class="form-group" disabled>
+                @*<input asp-for="Age" class="form-control" />*@
+                <label>@item.Age</label>
+            </div>
+            <label>JobTitle</label>
+            <div class="form-group" disabled>
+                @*<input asp-for="JobTitle" class="form-control" />*@
+                <label>@item.JobTitle</label>
+            </div>
+
+        }
+        @*<form asp-action="_PartialEdit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Age" class="control-label"></label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="JobTitle" class="control-label"></label>
+                    <input asp-for="JobTitle" class="form-control" />
+                    <span asp-validation-for="JobTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>*@
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

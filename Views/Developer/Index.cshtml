@@ -1,0 +1,168 @@
+﻿@*@model IEnumerable<EvaluationBizsol.Models.DeveloperDM>*@
+
+@model EvaluationBizsol.Models.DeveloperDM
+@using System.Web
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/lib/jquery1.11.1/jquery.min.js"></script>
+<h1>Developers</h1>
+
+<p>
+    @*asp-action="Create"*@
+    <a href="#" data-toggle="modal" data-target="#developerModal" class="btn btn-primary">Create</a>
+</p>
+
+<div class="modal fade" id="developerModal">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <h5 class="modal-title">Add New Dev</h5>
+                    <a href="#" data-toggle="modal"  data-target="#developerModal" class="btn btn-primary text-lg-right" id="btnaddmore">Add More</a>
+                  
+                    @*<h5 class="modal-title">Add New Dev</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>*@
+                </div>
+            </div>
+            <div class="modal-body">
+                <form id="devForm">
+                    <div class="col-10">
+                        <label>Name</label>
+                        <input id="devname" asp-for="Name" class="form-control" />
+                        <label>Age</label>
+                        <input id="devage" asp-for="Age" class="form-control" />
+                        <label>JobTitle</label>
+                        <input id="devjob" asp-for="JobTitle" class="form-control" />
+
+                    </div>
+
+                    <div class="container-fluid" id="parent"></div>
+                </form>
+            </div>
+            @*<div id="devdatadiv" class="modal-body">
+           
+            </div>*@
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <a href="#" data-toggle="modal" class="btn btn-primary" id="btnSave">Save</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Age
+            </th>
+            <th>
+                Job Title
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Developers)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Age
+                </td>
+                <td>
+                    @item.JobTitle
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                    @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                    @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    var devDataList = []
+    var devObj;
+    var devMainObj;
+
+    $(document).ready(function () {
+
+        $("#btnSave").click(function () {
+
+            //var devsData = $("#devForm").serialize();
+            devObj = {
+                Name: $("input[name='Name']").val(),
+                Age: $("input[name='Age']").val(),
+                JobTitle: $("input[name='JobTitle']").val(),
+            };
+            devDataList.push(devObj);
+
+           //devMainObj = {
+           //     DeveloperList: devDataList
+           // };
+
+            debugger
+            $.ajax({
+                type: "Post",
+                url: "/Developer/Create",
+                data: JSON.stringify(devMainObj),
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                processData: false,
+                contentType: "application/json; charset=UTF-8",
+                success: function (data) {
+                    if (data == "success") {
+                        window.location.href = "/Developer/Index"
+                    }
+
+                }
+            });
+
+        });
+    });
+    var count = 1;
+        $("#btnaddmore").click(function (e) {
+    //$(document).on("click", "#btnaddmore", function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            devObj = {
+                Name: $("input[name='Name']").val(),
+                Age: $("input[name='Age']").val(),
+                JobTitle: $("input[name='JobTitle']").val(),
+            };
+            debugger
+
+            devDataList.push(devObj);
+
+            debugger
+
+            var str = '<h3>Developer#'+ count +'</h3><div class="form-group" id=d' + count + "><label>Name</label><input value=" + $("#devname").val() + ' class="form-control"/><label>Age</label><input value=' + $("#devage").val() + ' class="form-control"/><label>JobTitle</label><input value=' + $("#devjob").val() + ' class="form-control"/>';
+
+
+                $('#parent').append(str);
+            count++;
+            $("#devname").val("");
+            $("#devage").val("");
+           $("#devjob").val("");
+    });
+</script>
