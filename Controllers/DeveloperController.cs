@@ -6,6 +6,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EvaluationBizsol.ViewModel;
 
 namespace EvaluationBizsol.Controllers
 {
@@ -31,19 +32,24 @@ namespace EvaluationBizsol.Controllers
         }
 
         [HttpPost]
-        public JsonResult Create(DeveloperDM dev)
+        public JsonResult Save([FromBody] List<DeveloperDM> dev)
         {
             if (ModelState.IsValid)
             {
-                db.Developer.Add(dev);
-                db.SaveChanges();
+               foreach(var d in dev)
+                {
+                    db.Developer.Add(d);
+                    db.SaveChanges();
+                }
+                //await db.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
-                return Json(dev);
+                return Json("success");
             }
 
             //return View(dev);
             return Json(dev);
         }
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)

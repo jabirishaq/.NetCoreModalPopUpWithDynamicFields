@@ -1,6 +1,7 @@
 using EvaluationBizsol.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,11 @@ namespace EvaluationBizsol
             services.AddDbContext<EvaluationDbContext>(options => {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"));
+            });
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueCountLimit = int.MaxValue;
+                options.ValueLengthLimit = int.MaxValue;
             });
             services.AddControllersWithViews();
         }
