@@ -6,7 +6,6 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/lib/jquery1.11.1/jquery.min.js"></script>
 <h1>Developers</h1>
 
 <p>
@@ -20,12 +19,12 @@
             <div class="modal-header">
                 <div class="row">
                     <h5 class="modal-title">Add New Dev</h5>
-                    <a href="#" data-toggle="modal"  data-target="#developerModal" class="btn btn-primary text-lg-right" id="btnaddmore">Add More</a>
-                  
+                    <a href="#" data-toggle="modal" data-target="#developerModal" class="btn btn-primary text-lg-right" id="btnaddmore">Add More</a>
+
                     @*<h5 class="modal-title">Add New Dev</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>*@
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
                 </div>
             </div>
             <div class="modal-body">
@@ -44,16 +43,16 @@
                 </form>
             </div>
             @*<div id="devdatadiv" class="modal-body">
-           
-            </div>*@
-                <div class="modal-footer">
-                    <div class="btn-group">
-                        <a href="#" data-toggle="modal" class="btn btn-primary" id="btnSave">Save</a>
-                    </div>
+
+                </div>*@
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <a href="#" data-toggle="modal" class="btn btn-primary" id="btnSave">Save</a>
                 </div>
             </div>
-
         </div>
+
+    </div>
 
 </div>
 
@@ -96,6 +95,8 @@
     </tbody>
 </table>
 
+    <script src="~/lib/jquery1.11.1/jquery.min.js"></script>
+
 
 <script>
     var devDataList = []
@@ -107,33 +108,42 @@
         $("#btnSave").click(function () {
 
             //var devsData = $("#devForm").serialize();
+
             devObj = {
                 Name: $("input[name='Name']").val(),
                 Age: $("input[name='Age']").val(),
                 JobTitle: $("input[name='JobTitle']").val(),
             };
-            devDataList.push(devObj);
+            devDataList.push(devObj)
 
-           //devMainObj = {
-           //     DeveloperList: devDataList
-           // };
+            devMainObj = {
+                Developer: devObj,
+                DeveloperList: devDataList
+            };
+
+            var da = JSON.stringify(devObj)
 
             debugger
+             debugger
             $.ajax({
-                type: "Post",
-                url: "/Developer/Create",
-                data: JSON.stringify(devMainObj),
-                dataType: 'json',
-                contentType: "application/json; charset=utf-8",
-                processData: false,
-                contentType: "application/json; charset=UTF-8",
-                success: function (data) {
-                    if (data == "success") {
+                type: 'POST',
+                url: '/Developer/Save',
+                //url: '@Url.Action("Save", "Developer")',
+                data: da,
+                    //data: JSON.stringify(devMainObj),
+                    //data: { "dev": "nnn" },
+                    //data: JSON.stringify({ "dev": da }),
+                    dataType: 'json',
+                    contentType: 'application/json'
+                }).done(function (data) {
+                    debugger
+                    if (data != null) {
                         window.location.href = "/Developer/Index"
+                    } else {
+                        alert("error");
                     }
+                });
 
-                }
-            });
 
         });
     });
@@ -144,7 +154,7 @@
             e.preventDefault();
             e.stopPropagation();
 
-
+            debugger
             devObj = {
                 Name: $("input[name='Name']").val(),
                 Age: $("input[name='Age']").val(),
